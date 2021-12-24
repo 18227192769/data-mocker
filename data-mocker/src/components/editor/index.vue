@@ -22,7 +22,7 @@ export default defineComponent({
             console.log('test', JSON.stringify(props.value));
 
             instance.previewEditor.setValue(
-                props.value
+                JSON.stringify(props.value, null, '\t')
             )
         })
 
