@@ -57,7 +57,7 @@
             min-width: 820px;
 
             @media screen {
-                @media (max-width: 1530px) {
+                @media (max-width: 1570px) {
                     flex-direction: column-reverse;
                 }
             }

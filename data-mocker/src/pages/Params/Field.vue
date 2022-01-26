@@ -1,8 +1,20 @@
 <template>
-    <div class="params__field">
+    <div
+        class="params__field"
+        draggable="true"
+        @dragstart="onDragStart"
+        @drag="onDrag"
+        @dragend="onDragEnd"
+    >
+        <div
+            v-show="status.dragging"
+            class="params__field-mask">
+        </div>
         <a-form-item label="字段名称">
             <a-input
+                draggable="true"
                 v-model:value="field.name"
+                @dragstart="offDrag"
             />
         </a-form-item>
         <a-form-item label="字段类型">
@@ -15,6 +27,7 @@
         </a-form-item>
         <a-form-item label="生成规则">
             <a-radio-group
+                class="params__field-rule-type"
                 v-model:value="field.ruleType"
                 option-type="button"
                 :options="rules"
@@ -36,10 +49,40 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { CommonlyUsedNumber, CommonlyUsedString, Fields, Rules, getDefaultField }  from './constant';
 import { CommonlyUsedNumberType, CommonlyUsedStringType, FieldType, RuleType } from './index.d';
+// import src from '../../assets/logo.png';
+
+import canDrag from './utils/canDrag';
 
 export default defineComponent({
-    props: ['field'],
+    props: [
+        'field',
+        'toggleTrashVisible'
+    ],
     methods: {
+        // event
+        onDragStart(e) {
+            if (!canDrag(e)) return;
+
+            this.status.dragging = true;
+
+            e.dataTransfer.setData('fieldName', this.field.name);
+
+            this.toggleTrashVisible();
+        },
+        onDrag(e) {},
+        onDragEnd(e) {
+            this.status.dragging = false;
+            this.toggleTrashVisible();
+        },
+
+        /**
+         * 阻止子元素响应拖拽
+         */
+        offDrag(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        },
+
         /**
          * 判断当前规则是否是 常用
          */
@@ -67,9 +110,14 @@ export default defineComponent({
         }
     },
     setup(props) {
+        const status = reactive({
+            dragging: false
+        })
+
         return {
             fields: Fields,
-            rules: Rules
+            rules: Rules,
+            status
         };
     }
 })
@@ -77,11 +125,32 @@ export default defineComponent({
 
 <style lang="less">
     .params__field {
+        position: relative;
         display: flex;
         justify-content: space-evenly;
 
+        &-mask {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+
+            background-color: rgba(63, 243, 204, 0.445);
+        }
+
+        &-rule-type {
+            display: flex !important;
+            width: -webkit-fill-available;
+
+            label {
+                flex-grow: 1;
+                text-align: center;
+            }
+        }
+
         // reset
         .ant-form-item {
+            flex-grow: 1;
             margin-right: 20px;
         }
 

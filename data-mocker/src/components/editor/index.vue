@@ -1,34 +1,26 @@
 <template>
     <div id="mocker__editor"></div>
-    <span>{{ value }}</span>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, watchEffect } from 'vue'
+import { defineComponent, markRaw, onMounted, reactive, watch, watchEffect } from 'vue'
 import monaco from './loader';
 
 export default defineComponent({
     props: ['value'],
     setup(props) {
-        const test = ref(false);
         const instance = reactive({
             previewEditor: null
         });
 
         watchEffect(() => {
-            if (!instance.previewEditor) {
-                return;
-            }
-            console.log('test', JSON.stringify(props.value));
-
-            instance.previewEditor.setValue(
+            instance.previewEditor?.setValue?.(
                 JSON.stringify(props.value, null, '\t')
             )
         })
 
         onMounted(() => {
-            console.log('props', props);
-            instance.previewEditor = monaco.editor.create(
+            instance.previewEditor = markRaw(monaco.editor.create(
                 document.getElementById('mocker__editor') as HTMLElement,
                 {
                     language: 'typescript',
@@ -41,12 +33,11 @@ export default defineComponent({
                     dragAndDrop: true,
                     automaticLayout: true
                 }
-            )
+            ))
         })
 
         return {
-            instance,
-            test
+            instance
         }
     }
 })

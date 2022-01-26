@@ -7,8 +7,11 @@
         >
             <div class="mocker__field-list">
                 <!-- 字段配置列表 -->
-                <div v-for="(item, index) in params" :key="index">
-                    <field :field="item" />
+                <div v-for="(item, index) in store.params" :key="index">
+                    <field
+                        :field="item"
+                        :toggleTrashVisible="toggleTrashVisible"
+                    />
                 </div>
             </div>
         </a-form>
@@ -22,6 +25,10 @@
                 + 添加
             </a-button>
         </div>
+        <trash-box
+            :visible="status.trashVisible"
+            :delete="deleteField"
+        ></trash-box>
     </div>
 </template>
 
@@ -32,25 +39,32 @@ import { mapActions } from 'pinia';
 import { getDefaultField } from "./constant";
 // import { PlusCircleOutlined } from '@ant-design/icons-vue'
 import field from "./Field.vue";
+import TrashBox from './trashBox.vue'
 import { useStore } from '../../store'
 
 export default defineComponent({
     components: {
         field,
+        TrashBox
         // PlusCircleOutlined
     },
     setup() {
         const store = useStore();
         const status = reactive({
-            mouseIn: false    
+            mouseIn: false,
+            trashVisible: false 
         });
         return {
-            params: store.params,
+            store,
             status
         };
     },
     methods: {
+        // 更新参数配置 的 action
         ...mapActions(useStore, ['updateParams']),
+        /**
+         * 添加字段
+         */
         addField() {
             this.updateParams('add', getDefaultField());
 
@@ -59,14 +73,35 @@ export default defineComponent({
             // 控制滚动条滚到最底部
             $target.animate({scrollTop: scrollHeight}, 500);
         },
+        deleteField(name) {
+            if (!name) {
+                return;
+            }
+            this.updateParams('delete', name);
+        },
+        /**
+         * 更新状态
+         */
         updateStatus(key, value) {
             this.status[key] = value;
         },
+        /**
+         * 获取类名
+         */
         getClassName(className, payload) {
             return `${className} ${payload}`;
         },
+        /**
+         * 鼠标移入状态
+         */
         mouseIn() {
             return this.status.mouseIn ? 'mouseIn' : ''
+        },
+        /**
+         * 切换垃圾桶显示状态
+         */
+        toggleTrashVisible() {
+            this.status.trashVisible = !this.status.trashVisible;
         }
     },
 });
@@ -79,6 +114,10 @@ export default defineComponent({
         border: 1px solid black;
         margin: auto;
         transition: all .2s linear;
+
+        .mocker__field-list {
+            // padding: 8px 12px;
+        }
 
         .mocker__add-field {
             display: flex;
@@ -99,7 +138,7 @@ export default defineComponent({
             }
 
             &::-webkit-scrollbar {
-                width: 0px;
+                width: 4px;
             }
             &::-webkit-scrollbar-track {
                 background-color: #00000000;
@@ -117,7 +156,7 @@ export default defineComponent({
         }
     }
 
-    @media screen and (max-width: 1530px) {
+    @media screen and (max-width: 1570px) {
         #mocker__params {
             width: 100%;
             height: auto;

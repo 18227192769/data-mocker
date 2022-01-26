@@ -25,3 +25,14 @@ export enum CommonlyUsedNumberType {
     // 斐波那契数列
     fibonacci = 'fibonacci'
 }
+
+export type RuleConfigType = CommonlyUsedStringType | CommonlyUsedNumberType
+
+export interface FieldConfig {
+    name: string,
+    type: FieldType,
+    ruleType: RuleType,
+    ruleConfig: {
+        type: RuleConfigType
+    }
+}

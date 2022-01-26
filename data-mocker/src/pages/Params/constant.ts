@@ -1,4 +1,10 @@
-import { CommonlyUsedNumberType, CommonlyUsedStringType, FieldType, RuleType } from "./index.d"
+import {
+    CommonlyUsedNumberType,
+    CommonlyUsedStringType,
+    FieldType,
+    RuleType,
+    FieldConfig
+} from "./index.d"
 
 // 字段默认名称
 export const DEFAULT_NAME = 'default';
@@ -55,8 +61,8 @@ export const CommonlyUsedNumber = [
  * 获取默认字段配置
  * @returns 
  */
-export const getDefaultField = () => ({
-    name: DEFAULT_NAME,
+export const getDefaultField = (): FieldConfig => ({
+    name: DEFAULT_NAME + (Math.random() * 10000000).toFixed(),
     type: FieldType.string,
     ruleType: RuleType.commonlyUsed,
     ruleConfig: {
