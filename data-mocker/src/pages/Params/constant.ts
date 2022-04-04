@@ -42,11 +42,23 @@ export const CommonlyUsedString = [
     {
         label: '姓别',
         value: CommonlyUsedStringType.sex
+    },
+    {
+        label: '省区划',
+        value: CommonlyUsedStringType.province
+    },
+    {
+        label: '市区划',
+        value: CommonlyUsedStringType.city
     }
 ]
 
 // 常用数字类型
 export const CommonlyUsedNumber = [
+    {
+        label: '序号',
+        value: CommonlyUsedNumberType.index
+    },
     {
         label: '身份证',
         value: CommonlyUsedNumberType.id

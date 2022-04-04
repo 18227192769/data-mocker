@@ -5,8 +5,8 @@ import dataBuilder from '../tools/dataBuilder';
 export const useStore = defineStore('mocker', {
     state: () => ({
         currentTab: ['json'],
-        params: new Array(18).fill(0).map(() => getDefaultField()),
-        num: 1
+        params: new Array(6).fill(0).map(() => getDefaultField()),
+        num: 10
     }),
     getters: {
         dataSource(state): any {

@@ -29,10 +29,9 @@
                 v-show="globalStore.currentTab[0] === 'json'"
                 :value="globalStore.json"
             />
-            <table
+            <table-view
                 v-show="globalStore.currentTab[0] === 'table'" 
-                :dataSource="globalStore.dataSource"
-                :columns="1"
+                :dataSource="globalStore.json"
             />
         </div>
     </div>
@@ -41,14 +40,14 @@
 <script lang="ts">
     import { computed, defineComponent, reactive, ref, watch, watchEffect } from 'vue';
     import Editor from '../../components/editor/index.vue';
-    import Table from '../../components/table/index.vue';
+    import TableView from '../../components/table/index.vue';
     import { CompressOutlined, FileExcelOutlined } from '@ant-design/icons-vue';
     import { useStore } from '../../store';
 
     export default defineComponent({
         components: {
             Editor,
-            Table,
+            TableView,
             CompressOutlined,
             FileExcelOutlined
         },

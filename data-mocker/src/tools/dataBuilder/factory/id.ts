@@ -1,4 +1,4 @@
-import { flatternCodeList } from "../../../assets/geoJson/china";
+import flatternCodeList from "../../geoJson/flatternCodeList";
 import random from "../../random";
 
 /**

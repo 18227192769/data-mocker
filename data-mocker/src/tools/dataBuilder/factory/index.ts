@@ -2,14 +2,20 @@ import { RuleConfigType } from "../../../pages/Params";
 import name from './name';
 import sex from './sex';
 import id from './id';
+import fibonacci from "./fibonacci";
+import province from "./province";
+import city from "./city";
 
 const factorys = {
     // string
     name,
     sex,
+    province,
+    city,
     // number
     id,
-    fibonacci() {return 'fibonacci'}
+    fibonacci,
+    index: (index: number) => index + 1,
 }
 
 /**

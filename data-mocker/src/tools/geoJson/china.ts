@@ -1,4 +1,4 @@
-const JSON = {
+export const JSON = {
     "110000": {
         "name": "北京市",
         "child": {
@@ -5185,23 +5185,3 @@ const JSON = {
         }
     }
 }
-
-/**
- * 区域代码列表
- */
-export const flatternCodeList = (function () {
-    // 收集器
-    function collector(target: any = JSON, result: string[] = []) {
-        Object.keys(target).forEach((code) => {
-            result.push(code)
-
-            if (typeof target[code] === 'object') {
-                collector(target[code].child, result)
-            }
-        })
-
-        return result;
-    }
-
-    return collector();
-} ())

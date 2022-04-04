@@ -15,11 +15,17 @@ export enum CommonlyUsedStringType {
     // 姓名
     name = 'name',
     // 性别
-    sex = 'sex'
+    sex = 'sex',
+    // 省
+    province = 'province',
+    // 市
+    city = 'city'
 }
 
 // 常用数字类型
 export enum CommonlyUsedNumberType {
+    // 序号
+    index = 'index',
     // 身份证
     id = 'id',
     // 斐波那契数列

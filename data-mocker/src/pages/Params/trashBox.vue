@@ -83,7 +83,7 @@ export default defineComponent({
         z-index: 100;
 
         transform: translate(1000px, -1000px);
-        transition: all 1s cubic-bezier(0.22, 0.27, 0, 0.85);
+        transition: all .5s cubic-bezier(0.22, 0.27, 0, 0.85);
 
         &.visible {
             transform: translate(0px, 0px);

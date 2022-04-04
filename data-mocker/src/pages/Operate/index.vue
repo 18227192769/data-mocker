@@ -4,11 +4,17 @@
         @mouseleave="() => toggleVisible(false)"
     >
         <div class="mocker__operate-box">
-            <div class="mocker__operate-preview">
+            <div
+                class="mocker__operate-preview"
+                @click="preview"
+            >
                 <send-outlined class="mocker__operate-icon" />
-                <span @click="preview">预览</span>
+                <span>预览</span>
             </div>
-            <div class="mocker__operate-export">
+            <div
+                class="mocker__operate-export"
+                @click="exportExcel"
+            >
                 <export-outlined class="mocker__operate-icon" />
                 <span>导出</span>
             </div>
@@ -24,8 +30,9 @@
 
 <script lang="ts">
     import { defineComponent, ref } from 'vue';
+    import * as XLSX from 'xlsx';
     import { ApiOutlined, ExportOutlined, SendOutlined } from '@ant-design/icons-vue';
-import { useStore } from '../../store';
+    import { useStore } from '../../store';
 
     export default defineComponent({
         components: {
@@ -37,6 +44,17 @@ import { useStore } from '../../store';
             preview() {
                 const store = useStore();
                 console.log(store);
+            },
+            exportExcel() {
+                const store = useStore();
+                console.log(store.json);
+
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(store.json);
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'mock');
+
+                XLSX.writeFile(workbook, 'mock.xlsx', {});
             },
             getRootClassName() {
                 const payload = this.visible ? '' : 'hide';
